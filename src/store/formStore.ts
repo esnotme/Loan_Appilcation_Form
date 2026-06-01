@@ -14,6 +14,12 @@ interface EmploymentInfo {
   yearsEmployed: string;
 }
 
+interface LoanDetails {
+  amount: string;
+  purpose: string;
+  durationMonths: string;
+}
+
 interface FormState {
   loanType: string | null;
   setLoanType: (type: string) => void;
@@ -23,6 +29,9 @@ interface FormState {
 
   employmentInfo: EmploymentInfo | null;
   setEmploymentInfo: (info: EmploymentInfo) => void;
+
+  loanDetails: LoanDetails | null;
+  setLoanDetails: (info: LoanDetails) => void;
 }
 
 export const useFormStore = create<FormState>((set) => ({
@@ -34,4 +43,7 @@ export const useFormStore = create<FormState>((set) => ({
 
   employmentInfo: null,
   setEmploymentInfo: (info: EmploymentInfo) => set({ employmentInfo: info }),
+
+  loanDetails: null,
+  setLoanDetails: (info: LoanDetails) => set({ loanDetails: info }),
 }));

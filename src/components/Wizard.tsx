@@ -2,6 +2,7 @@ import { useState } from "react";
 import LoanTypeStep from "../steps/LoanTypeStep";
 import PersonalInfoStep from "../steps/PersonalInfoStep";
 import EmploymentStep from "../steps/EmploymentStep";
+import LoanDetailsStep from "../steps/LoanDetailsStep";
 
 export default function Wizard() {
   const [step, setStep] = useState(0);
@@ -14,6 +15,7 @@ export default function Wizard() {
       {step === 0 && <LoanTypeStep onNext={nextStep} />}
       {step === 1 && <PersonalInfoStep onNext={nextStep} onBack={prevStep} />}
       {step === 2 && <EmploymentStep onNext={nextStep} onBack={prevStep} />}
+      {step === 3 && <LoanDetailsStep onNext={nextStep} onBack={prevStep} />}
     </div>
   );
 }
