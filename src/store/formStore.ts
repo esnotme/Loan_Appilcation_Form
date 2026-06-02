@@ -7,12 +7,14 @@ interface PersonalInfo {
   phone: string;
 }
 
-interface EmploymentInfo {
+export interface EmploymentInfo {
   employer: string;
   jobTitle: string;
   income: string;
   yearsEmployed: string;
+  employmentType: "Salaried" | "Self-Employed" | "Other";
 }
+
 
 interface LoanDetails {
   amount: string;
@@ -45,6 +47,13 @@ interface SignatureInfo {
   signature: string;
 }
 
+interface VerificationInfo {
+  pan: string;
+  aadhaar: string;
+  panVerified: boolean;
+  aadhaarVerified: boolean;
+}
+
 interface FormState {
   loanType: string | null;
   setLoanType: (type: string) => void;
@@ -69,6 +78,9 @@ interface FormState {
 
   signatureInfo: SignatureInfo | null;
   setSignatureInfo: (info: SignatureInfo) => void;
+
+  verificationInfo: VerificationInfo | null;
+  setVerificationInfo: (info: VerificationInfo) => void;
 }
 
 export const useFormStore = create<FormState>((set) => ({
@@ -95,4 +107,7 @@ export const useFormStore = create<FormState>((set) => ({
 
   signatureInfo: null,
   setSignatureInfo: (info: SignatureInfo) => set({ signatureInfo: info }),
+
+  verificationInfo: null,
+  setVerificationInfo: (info: VerificationInfo) => set({ verificationInfo: info }),
 }));

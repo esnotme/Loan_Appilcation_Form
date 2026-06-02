@@ -43,6 +43,17 @@ export default function EmploymentStep({ onNext, onBack }: { onNext: () => void;
         {errors.yearsEmployed && <p className="text-red-500">{errors.yearsEmployed.message}</p>}
       </div>
 
+      <div>
+        <label className="block">Employment Type</label>
+        <select {...register("employmentType")} className="border p-2 w-full">
+          <option value="">Select...</option>
+          <option value="Salaried">Salaried</option>
+          <option value="Self-Employed">Self-Employed</option>
+          <option value="Other">Other</option>
+        </select>
+        {errors.employmentType && <p className="text-red-500">{errors.employmentType.message}</p>}
+      </div>
+
       <div className="flex gap-2">
         <button type="button" onClick={onBack} className="bg-gray-500 text-white px-4 py-2 rounded">Back</button>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Next</button>

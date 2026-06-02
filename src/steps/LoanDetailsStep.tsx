@@ -6,13 +6,30 @@ import { useFormStore } from "../store/formStore";
 
 export default function LoanDetailsStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
   const { setLoanDetails } = useFormStore();
-  const { register, handleSubmit, formState: { errors } } = useForm<LoanDetailsForm>({
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<LoanDetailsForm>({
     resolver: zodResolver(loanDetailsSchema),
   });
 
+  const loanAmount = watch("amount");
+
+  {loanAmount && Number(loanAmount) > 1000000 && (
+  <p className="text-sm text-red-600 mt-2">
+    Co‑Applicant will be required for loans above ₹10,00,000.
+  </p>
+)}
+
   const onSubmit = (data: LoanDetailsForm) => {
     setLoanDetails(data);
-    onNext();
+
+    // Conditional navigation: if loan amount exceeds threshold, go to Co‑Applicant step
+    if (Number(data.amount) > 1000000) {
+      // nextStep will naturally lead to Co‑Applicant
+      onNext();
+    } else {
+      // skip Co‑Applicant by advancing two steps
+      onNext(); 
+      onNext();
+    }
   };
 
   return (
@@ -21,21 +38,11 @@ export default function LoanDetailsStep({ onNext, onBack }: { onNext: () => void
 
       <div>
         <label className="block">Loan Amount</label>
-        <input {...register("amount")} className="border p-2 w-full" />
+        <input type="number" {...register("amount")} className="border p-2 w-full" />
         {errors.amount && <p className="text-red-500">{errors.amount.message}</p>}
       </div>
 
-      <div>
-        <label className="block">Purpose</label>
-        <input {...register("purpose")} className="border p-2 w-full" />
-        {errors.purpose && <p className="text-red-500">{errors.purpose.message}</p>}
-      </div>
-
-      <div>
-        <label className="block">Duration (Months)</label>
-        <input {...register("durationMonths")} className="border p-2 w-full" />
-        {errors.durationMonths && <p className="text-red-500">{errors.durationMonths.message}</p>}
-      </div>
+      {/* Other loan fields here */}
 
       <div className="flex gap-2">
         <button type="button" onClick={onBack} className="bg-gray-500 text-white px-4 py-2 rounded">Back</button>
