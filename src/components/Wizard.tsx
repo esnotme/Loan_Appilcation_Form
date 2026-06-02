@@ -6,6 +6,8 @@ import LoanDetailsStep from "../steps/LoanDetailsStep";
 import CoApplicantStep from "../steps/CoApplicantStep";
 import AddressStep from "../steps/AddressStep";
 import DocumentUploadStep from "../steps/DocumentUploadStep";
+import SignatureStep from "../steps/SignatureStep";
+import ReviewStep from "../steps/ReviewStep";
 
 export default function Wizard() {
   const [step, setStep] = useState(0);
@@ -22,6 +24,9 @@ export default function Wizard() {
       {step === 4 && <CoApplicantStep onNext={nextStep} onBack={prevStep} />}
       {step === 5 && <AddressStep onNext={nextStep} onBack={prevStep} />}
       {step === 6 && <DocumentUploadStep onNext={nextStep} onBack={prevStep} />}
+      {step === 7 && <SignatureStep onNext={nextStep} onBack={prevStep} />}
+      {step === 8 && <SignatureStep onNext={nextStep} onBack={prevStep} />}
+      {step === 9 && <ReviewStep onBack={prevStep} />}
     </div>
   );
 }

@@ -40,6 +40,11 @@ interface DocumentInfo {
   addressProof: string;
 }
 
+interface SignatureInfo {
+  agree: boolean;
+  signature: string;
+}
+
 interface FormState {
   loanType: string | null;
   setLoanType: (type: string) => void;
@@ -61,6 +66,9 @@ interface FormState {
 
   documentInfo: DocumentInfo | null;
   setDocumentInfo: (info: DocumentInfo) => void;
+
+  signatureInfo: SignatureInfo | null;
+  setSignatureInfo: (info: SignatureInfo) => void;
 }
 
 export const useFormStore = create<FormState>((set) => ({
@@ -82,7 +90,9 @@ export const useFormStore = create<FormState>((set) => ({
   addressInfo: null,
   setAddressInfo: (info: AddressInfo) => set({ addressInfo: info }),
 
-
   documentInfo: null,
   setDocumentInfo: (info: DocumentInfo) => set({ documentInfo: info }),
+
+  signatureInfo: null,
+  setSignatureInfo: (info: SignatureInfo) => set({ signatureInfo: info }),
 }));
