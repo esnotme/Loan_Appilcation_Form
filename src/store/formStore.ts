@@ -16,10 +16,15 @@ export interface EmploymentInfo {
 }
 
 
-interface LoanDetails {
+export interface LoanDetails {
+  loanType: "Personal" | "Home" | "Business";
   amount: string;
-  purpose: string;
-  durationMonths: string;
+  purpose?: string;              
+  durationMonths?: string;
+  propertyAddress?: string;
+  propertyValue?: string;
+  registrationNumber?: string;
+  turnover?: string;
 }
 
 interface CoApplicantInfo {
