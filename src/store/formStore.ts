@@ -41,11 +41,15 @@ interface AddressInfo {
   postalCode: string;
 }
 
-interface DocumentInfo {
+export interface DocumentInfo {
   idProof: string;
   incomeProof: string;
   addressProof: string;
+  salarySlips?: string;
+  itrDocs?: string;
+  otherDocs?: string;
 }
+
 
 interface SignatureInfo {
   agree: boolean;
