@@ -20,6 +20,26 @@ interface LoanDetails {
   durationMonths: string;
 }
 
+interface CoApplicantInfo {
+  fullName: string;
+  relationship: string;
+  email: string;
+  phone: string;
+}
+
+interface AddressInfo {
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
+
+interface DocumentInfo {
+  idProof: string;
+  incomeProof: string;
+  addressProof: string;
+}
+
 interface FormState {
   loanType: string | null;
   setLoanType: (type: string) => void;
@@ -32,6 +52,15 @@ interface FormState {
 
   loanDetails: LoanDetails | null;
   setLoanDetails: (info: LoanDetails) => void;
+
+  coApplicantInfo: CoApplicantInfo | null;
+  setCoApplicantInfo: (info: CoApplicantInfo) => void;
+
+  addressInfo: AddressInfo | null;
+  setAddressInfo: (info: AddressInfo) => void;
+
+  documentInfo: DocumentInfo | null;
+  setDocumentInfo: (info: DocumentInfo) => void;
 }
 
 export const useFormStore = create<FormState>((set) => ({
@@ -46,4 +75,14 @@ export const useFormStore = create<FormState>((set) => ({
 
   loanDetails: null,
   setLoanDetails: (info: LoanDetails) => set({ loanDetails: info }),
+
+  coApplicantInfo: null,
+  setCoApplicantInfo: (info: CoApplicantInfo) => set({ coApplicantInfo: info }),
+
+  addressInfo: null,
+  setAddressInfo: (info: AddressInfo) => set({ addressInfo: info }),
+
+
+  documentInfo: null,
+  setDocumentInfo: (info: DocumentInfo) => set({ documentInfo: info }),
 }));

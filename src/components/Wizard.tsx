@@ -3,6 +3,9 @@ import LoanTypeStep from "../steps/LoanTypeStep";
 import PersonalInfoStep from "../steps/PersonalInfoStep";
 import EmploymentStep from "../steps/EmploymentStep";
 import LoanDetailsStep from "../steps/LoanDetailsStep";
+import CoApplicantStep from "../steps/CoApplicantStep";
+import AddressStep from "../steps/AddressStep";
+import DocumentUploadStep from "../steps/DocumentUploadStep";
 
 export default function Wizard() {
   const [step, setStep] = useState(0);
@@ -16,6 +19,9 @@ export default function Wizard() {
       {step === 1 && <PersonalInfoStep onNext={nextStep} onBack={prevStep} />}
       {step === 2 && <EmploymentStep onNext={nextStep} onBack={prevStep} />}
       {step === 3 && <LoanDetailsStep onNext={nextStep} onBack={prevStep} />}
+      {step === 4 && <CoApplicantStep onNext={nextStep} onBack={prevStep} />}
+      {step === 5 && <AddressStep onNext={nextStep} onBack={prevStep} />}
+      {step === 6 && <DocumentUploadStep onNext={nextStep} onBack={prevStep} />}
     </div>
   );
 }
