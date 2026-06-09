@@ -1,6 +1,6 @@
 import { useFormStore } from "../store/formStore";
 
-export default function ReviewStep({ onBack }: { onBack: () => void }) {
+export default function ReviewStep({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
   const {
     loanType,
     personalInfo,
@@ -15,6 +15,7 @@ export default function ReviewStep({ onBack }: { onBack: () => void }) {
   const handleSubmit = () => {
     // TODO: integrate submission logic (API call, etc.)
     alert("Application submitted successfully!");
+    onNext(); // move to PreApprovalSummary after submit
   };
 
   return (

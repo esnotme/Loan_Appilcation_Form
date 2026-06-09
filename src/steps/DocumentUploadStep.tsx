@@ -19,6 +19,24 @@ export default function DocumentUploadStep({ onNext, onBack }: { onNext: () => v
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <h2 className="text-xl font-bold">Document Upload</h2>
 
+      <div>
+        <label className="block">ID Proof</label>
+        <input type="file" {...register("idProof")} />
+        {errors.idProof && <p className="text-red-500">{errors.idProof.message}</p>}
+      </div>
+
+      <div>
+        <label className="block">Address Proof</label>
+        <input type="file" {...register("addressProof")} />
+        {errors.addressProof && <p className="text-red-500">{errors.addressProof.message}</p>}
+      </div>
+
+      <div>
+        <label className="block">Income Proof</label>
+        <input type="file" {...register("incomeProof")} />
+        {errors.incomeProof && <p className="text-red-500">{errors.incomeProof.message}</p>}
+      </div>
+
       {employmentInfo?.employmentType === "Salaried" && (
         <div>
           <label className="block">Salary Slips</label>

@@ -1,17 +1,26 @@
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SignatureCanvas from "react-signature-canvas";
 import { signatureSchema } from "../schemas/signatureSchemas";
 import type { SignatureForm } from "../schemas/signatureSchemas";
 import { useFormStore } from "../store/formStore";
 
 export default function SignatureStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
   const { setSignatureInfo } = useFormStore();
+  const sigCanvas = useRef<SignatureCanvas>(null);
+
   const { register, handleSubmit, formState: { errors } } = useForm<SignatureForm>({
     resolver: zodResolver(signatureSchema),
   });
 
+  const clearSignature = () => {
+    sigCanvas.current?.clear();
+  };
+
   const onSubmit = (data: SignatureForm) => {
-    setSignatureInfo(data);
+    const signatureImage = sigCanvas.current?.toDataURL();
+    setSignatureInfo({ ...data, signature: signatureImage || "" });
     onNext();
   };
 
@@ -28,9 +37,15 @@ export default function SignatureStep({ onNext, onBack }: { onNext: () => void; 
       </div>
 
       <div>
-        <label className="block">Signature (type your full name)</label>
-        <input {...register("signature")} className="border p-2 w-full" />
-        {errors.signature && <p className="text-red-500">{errors.signature.message}</p>}
+        <label className="block">Draw Your Signature</label>
+        <SignatureCanvas
+          ref={sigCanvas}
+          penColor="black"
+          canvasProps={{ className: "border w-full h-32" }}
+        />
+        <button type="button" onClick={clearSignature} className="bg-gray-500 text-white px-2 py-1 rounded mt-2">
+          Clear
+        </button>
       </div>
 
       <div className="flex gap-2">

@@ -11,4 +11,3 @@ export const employmentSchema = z.object({
 });
 
 export type EmploymentForm = z.infer<typeof employmentSchema>;
-ok compile
