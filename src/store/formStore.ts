@@ -77,7 +77,7 @@ interface FormState {
   setLoanDetails: (info: LoanDetails) => void;
 
   coApplicantInfo: CoApplicantInfo | null;
-  setCoApplicantInfo: (info: CoApplicantInfo) => void;
+  setCoApplicantInfo: (info: CoApplicantInfo | null) => void;
 
   addressInfo: AddressInfo | null;
   setAddressInfo: (info: AddressInfo) => void;
@@ -106,7 +106,7 @@ export const useFormStore = create<FormState>((set) => ({
   setLoanDetails: (info: LoanDetails) => set({ loanDetails: info }),
 
   coApplicantInfo: null,
-  setCoApplicantInfo: (info: CoApplicantInfo) => set({ coApplicantInfo: info }),
+  setCoApplicantInfo: (info: CoApplicantInfo | null) => set({ coApplicantInfo: info }),
 
   addressInfo: null,
   setAddressInfo: (info: AddressInfo) => set({ addressInfo: info }),

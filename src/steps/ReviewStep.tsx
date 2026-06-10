@@ -1,6 +1,11 @@
 import { useFormStore } from "../store/formStore";
 
-export default function ReviewStep({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
+interface Props {
+  onNext: () => void;
+  onBack: () => void;
+}
+
+export default function ReviewStep({ onNext, onBack }: Props) {
   const {
     loanType,
     personalInfo,
@@ -10,64 +15,95 @@ export default function ReviewStep({ onBack, onNext }: { onBack: () => void; onN
     addressInfo,
     documentInfo,
     signatureInfo,
+    verificationInfo, // ✅ added
   } = useFormStore();
 
-  const handleSubmit = () => {
-    // TODO: integrate submission logic (API call, etc.)
-    alert("Application submitted successfully!");
-    onNext(); // move to PreApprovalSummary after submit
-  };
-
   return (
-    <div className="space-y-6">
-      <h2 className="text-xl font-bold">Review & Summary</h2>
+    <div className="space-y-6 bg-white p-6 rounded shadow">
+      <h2 className="text-xl font-bold text-[var(--color-primary)]">
+        Review Your Application
+      </h2>
 
-      <div className="space-y-2">
-        <h3 className="font-semibold">Loan Type</h3>
+      {/* Loan Type */}
+      <section className="border-b pb-4">
+        <h3 className="font-semibold text-gray-700">Loan Type</h3>
         <p>{loanType}</p>
+      </section>
 
-        <h3 className="font-semibold">Personal Info</h3>
-        <p>
-          {personalInfo?.fullName} | {personalInfo?.dob} | {personalInfo?.email} | {personalInfo?.phone}
-        </p>
+      {/* Personal Info */}
+      <section className="border-b pb-4">
+        <h3 className="font-semibold text-gray-700">Personal Information</h3>
+        <p>{personalInfo?.fullName}</p>
+        <p>{personalInfo?.email}</p>
+        <p>{personalInfo?.phone}</p>
+        <p>PAN: {verificationInfo?.pan}</p> {/* ✅ fixed */}
+        <p>Aadhaar: {verificationInfo?.aadhaar}</p> {/* ✅ fixed */}
+      </section>
 
-        <h3 className="font-semibold">Employment Info</h3>
-        <p>
-          {employmentInfo?.employer} | {employmentInfo?.jobTitle} | {employmentInfo?.income} | {employmentInfo?.yearsEmployed}
-        </p>
+      {/* Employment */}
+      <section className="border-b pb-4">
+        <h3 className="font-semibold text-gray-700">Employment</h3>
+        <p>{employmentInfo?.employmentType}</p>
+        <p>{employmentInfo?.employer}</p> {/* ✅ fixed */}
+        <p>Income: ₹{employmentInfo?.income}</p>
+      </section>
 
-        <h3 className="font-semibold">Loan Details</h3>
-        <p>
-          {loanDetails?.amount} | {loanDetails?.purpose} | {loanDetails?.durationMonths} months
-        </p>
+      {/* Loan Details */}
+<section className="border-b pb-4">
+  <h3 className="font-semibold text-gray-700">Loan Details</h3>
+  <p>Amount: ₹{loanDetails?.amount}</p>
+  <p>Tenure: {loanDetails?.durationMonths} months</p> {/* ✅ use correct property */}
+  <p>Purpose: {loanDetails?.purpose}</p>
+</section>
 
-        <h3 className="font-semibold">Co-Applicant Info</h3>
-        <p>
-          {coApplicantInfo?.fullName} | {coApplicantInfo?.relationship} | {coApplicantInfo?.email} | {coApplicantInfo?.phone}
-        </p>
 
-        <h3 className="font-semibold">Address Info</h3>
-        <p>
-          {addressInfo?.street}, {addressInfo?.city}, {addressInfo?.state}, {addressInfo?.postalCode}
-        </p>
+      {/* Co-Applicant */}
+      {coApplicantInfo?.fullName && (
+        <section className="border-b pb-4">
+          <h3 className="font-semibold text-gray-700">Co‑Applicant</h3>
+          <p>{coApplicantInfo?.fullName}</p>
+          <p>{coApplicantInfo?.relationship}</p>
+        </section>
+      )}
 
-        <h3 className="font-semibold">Documents</h3>
-        <p>
-          ID: {documentInfo?.idProof} | Income: {documentInfo?.incomeProof} | Address: {documentInfo?.addressProof}
-        </p>
+      {/* Address */}
+      <section className="border-b pb-4">
+        <h3 className="font-semibold text-gray-700">Address</h3>
+        <p>{addressInfo?.street}, {addressInfo?.city}, {addressInfo?.state}</p>
+        <p>PIN: {addressInfo?.postalCode}</p>
+      </section>
 
-        <h3 className="font-semibold">Signature</h3>
-        <p>
-          {signatureInfo?.signature} (Agreed: {signatureInfo?.agree ? "Yes" : "No"})
-        </p>
-      </div>
+      {/* Documents */}
+      <section className="border-b pb-4">
+        <h3 className="font-semibold text-gray-700">Documents</h3>
+        <ul className="list-disc pl-5">
+          {documentInfo?.idProof && <li>ID Proof: {documentInfo.idProof}</li>}
+          {documentInfo?.incomeProof && <li>Income Proof: {documentInfo.incomeProof}</li>}
+          {documentInfo?.addressProof && <li>Address Proof: {documentInfo.addressProof}</li>}
+        </ul>
+      </section>
 
+      {/* Signature */}
+      <section>
+        <h3 className="font-semibold text-gray-700">Signature</h3>
+        {signatureInfo?.signature ? (
+          <img
+            src={signatureInfo.signature}
+            alt="Signature preview"
+            className="border rounded h-24"
+          />
+        ) : (
+          <p>No signature provided</p>
+        )}
+      </section>
+
+      {/* Navigation */}
       <div className="flex gap-2">
-        <button onClick={onBack} className="bg-gray-500 text-white px-4 py-2 rounded">
+        <button type="button" onClick={onBack} className="secondary">
           Back
         </button>
-        <button onClick={handleSubmit} className="bg-green-600 text-white px-4 py-2 rounded">
-          Submit
+        <button type="button" onClick={onNext} className="primary">
+          Confirm & Submit
         </button>
       </div>
     </div>

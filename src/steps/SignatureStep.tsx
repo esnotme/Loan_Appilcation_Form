@@ -1,57 +1,91 @@
-import { useRef } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import SignatureCanvas from "react-signature-canvas";
-import { signatureSchema } from "../schemas/signatureSchemas";
-import type { SignatureForm } from "../schemas/signatureSchemas";
+import { useRef, useState } from "react";
 import { useFormStore } from "../store/formStore";
 
-export default function SignatureStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
+interface Props {
+  onNext: () => void;
+  onBack: () => void;
+}
+
+export default function SignatureStep({ onNext, onBack }: Props) {
   const { setSignatureInfo } = useFormStore();
-  const sigCanvas = useRef<SignatureCanvas>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SignatureForm>({
-    resolver: zodResolver(signatureSchema),
+  const startDrawing = (e: React.MouseEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.beginPath();
+    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    setIsDrawing(true);
+  };
+
+  const draw = (e: React.MouseEvent) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  const handleSubmit = () => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  const dataUrl = canvas.toDataURL("image/png");
+
+  setSignatureInfo({
+    agree: true,            // ✅ mark agreement
+    signature: dataUrl,     // ✅ store signature image as string
   });
+  onNext();
+};
 
-  const clearSignature = () => {
-    sigCanvas.current?.clear();
-  };
-
-  const onSubmit = (data: SignatureForm) => {
-    const signatureImage = sigCanvas.current?.toDataURL();
-    setSignatureInfo({ ...data, signature: signatureImage || "" });
-    onNext();
-  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <h2 className="text-xl font-bold">Signature</h2>
+    <div className="space-y-6 bg-white p-6 rounded shadow">
+      <h2 className="text-xl font-bold text-[var(--color-primary)]">
+        Signature
+      </h2>
 
-      <div>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...register("agree")} />
-          I confirm that the information provided is accurate
-        </label>
-        {errors.agree && <p className="text-red-500">{errors.agree.message}</p>}
-      </div>
-
-      <div>
-        <label className="block">Draw Your Signature</label>
-        <SignatureCanvas
-          ref={sigCanvas}
-          penColor="black"
-          canvasProps={{ className: "border w-full h-32" }}
-        />
-        <button type="button" onClick={clearSignature} className="bg-gray-500 text-white px-2 py-1 rounded mt-2">
-          Clear
-        </button>
-      </div>
+      <canvas
+        ref={canvasRef}
+        width={400}
+        height={200}
+        className="border rounded bg-gray-50 cursor-crosshair"
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+      />
 
       <div className="flex gap-2">
-        <button type="button" onClick={onBack} className="bg-gray-500 text-white px-4 py-2 rounded">Back</button>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+        <button type="button" onClick={clearCanvas} className="secondary">
+          Clear
+        </button>
+        <button type="button" onClick={onBack} className="secondary">
+          Back
+        </button>
+        <button type="button" onClick={handleSubmit} className="primary">
+          Next
+        </button>
       </div>
-    </form>
+    </div>
   );
 }

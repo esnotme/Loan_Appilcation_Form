@@ -1,85 +1,90 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loanDetailsSchema } from "../schemas/loanDetailsSchemas";
-import type { LoanDetailsForm } from "../schemas/loanDetailsSchemas";
 import { useFormStore } from "../store/formStore";
+import { useState, useEffect } from "react";
 
-export default function LoanDetailsStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
+interface Props {
+  onNext: () => void;
+  onBack: () => void;
+}
+
+export default function LoanDetailsStep({ onNext, onBack }: Props) {
   const { setLoanDetails } = useFormStore();
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<LoanDetailsForm>({
+  const [emi, setEmi] = useState<number>(0);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(loanDetailsSchema),
   });
 
-  const loanType = watch("loanType");
+  const amount = Number(watch("amount") || 0);
+  const months = Number(watch("durationMonths") || 0);
+  const interestRate = 0.12; // 12% annual
+  const monthlyRate = interestRate / 12;
 
-  const onSubmit = (data: LoanDetailsForm) => {
+  useEffect(() => {
+    if (amount > 0 && months > 0) {
+      const calcEmi =
+        (amount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+        (Math.pow(1 + monthlyRate, months) - 1);
+      setEmi(calcEmi);
+    } else {
+      setEmi(0);
+    }
+  }, [amount, months]);
+
+  const onSubmit = (data: any) => {
     setLoanDetails(data);
     onNext();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <h2 className="text-xl font-bold">Loan Details</h2>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6 bg-white p-6 rounded shadow"
+    >
+      <h2 className="text-xl font-bold text-[var(--color-primary)]">
+        Loan Details
+      </h2>
 
       <div>
-        <label className="block">Loan Type</label>
-        <select {...register("loanType")} className="border p-2 w-full">
-          <option value="">Select...</option>
-          <option value="Personal">Personal</option>
-          <option value="Home">Home</option>
-          <option value="Business">Business</option>
-        </select>
-        {errors.loanType && <p className="text-red-500">{errors.loanType.message}</p>}
+        <label>Loan Amount</label>
+        <input type="number" {...register("amount")} />
+        {errors.amount && <p className="error-text">{errors.amount.message}</p>}
       </div>
 
       <div>
-        <label className="block">Loan Amount</label>
-        <input type="number" {...register("amount")} className="border p-2 w-full" />
-        {errors.amount && <p className="text-red-500">{errors.amount.message}</p>}
+        <label>Tenure (months)</label>
+        <input type="number" {...register("durationMonths")} />
+        {errors.durationMonths && <p className="error-text">{errors.durationMonths.message}</p>}
       </div>
 
-      {/* Conditional fields */}
-      {loanType === "Personal" && (
-        <div>
-          <label className="block">Purpose</label>
-          <input {...register("purpose")} className="border p-2 w-full" />
-          {errors.purpose && <p className="text-red-500">{errors.purpose.message}</p>}
-        </div>
-      )}
+      <div>
+        <label>Purpose</label>
+        <input {...register("purpose")} />
+        {errors.purpose && <p className="error-text">{errors.purpose.message}</p>}
+      </div>
 
-      {loanType === "Home" && (
-        <>
-          <div>
-            <label className="block">Property Address</label>
-            <input {...register("propertyAddress")} className="border p-2 w-full" />
-            {errors.propertyAddress && <p className="text-red-500">{errors.propertyAddress.message}</p>}
-          </div>
-          <div>
-            <label className="block">Property Value</label>
-            <input type="number" {...register("propertyValue")} className="border p-2 w-full" />
-            {errors.propertyValue && <p className="text-red-500">{errors.propertyValue.message}</p>}
-          </div>
-        </>
-      )}
-
-      {loanType === "Business" && (
-        <>
-          <div>
-            <label className="block">Business Registration Number</label>
-            <input {...register("registrationNumber")} className="border p-2 w-full" />
-            {errors.registrationNumber && <p className="text-red-500">{errors.registrationNumber.message}</p>}
-          </div>
-          <div>
-            <label className="block">Annual Turnover</label>
-            <input type="number" {...register("turnover")} className="border p-2 w-full" />
-            {errors.turnover && <p className="text-red-500">{errors.turnover.message}</p>}
-          </div>
-        </>
-      )}
+      {/* ✅ Live EMI preview */}
+      <div className="bg-gray-50 p-4 rounded">
+        <p className="text-sm text-gray-600">Estimated EMI:</p>
+        <p className="text-lg font-semibold text-[var(--color-primary)]">
+          ₹{emi.toFixed(2)}
+        </p>
+      </div>
 
       <div className="flex gap-2">
-        <button type="button" onClick={onBack} className="bg-gray-500 text-white px-4 py-2 rounded">Back</button>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+        <button type="button" onClick={onBack} className="secondary">
+          Back
+        </button>
+        <button type="submit" className="primary">
+          Next
+        </button>
       </div>
     </form>
   );

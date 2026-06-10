@@ -1,41 +1,86 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loanTypeSchema } from "../schemas/loanSchemas";
 import { useFormStore } from "../store/formStore";
+import { useState } from "react";
 
-type LoanTypeForm = {
-  loanType: "Personal" | "Home" | "Business";
-};
+interface Props {
+  onNext: () => void;
+}
 
-export default function LoanTypeStep({ onNext }: { onNext: () => void }) {
+export default function LoanTypeStep({ onNext }: Props) {
   const { setLoanType } = useFormStore();
-  const { register, handleSubmit, formState: { errors } } = useForm<LoanTypeForm>({
-    resolver: zodResolver(loanTypeSchema),
-  });
+  const [selected, setSelected] = useState<"Personal" | "Home" | "Self-Employed">("Personal");
 
-  const onSubmit = (data: LoanTypeForm) => {
-    setLoanType(data.loanType);
+  const handleNext = () => {
+    setLoanType(selected);
     onNext();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <h2 className="text-xl font-bold">Select Loan Type</h2>
-      <div className="flex flex-col gap-2">
-        <label>
-          <input type="radio" value="Personal" {...register("loanType")} /> Personal Loan
+    <div className="space-y-6 bg-white p-6 rounded shadow">
+      <h2 className="text-xl font-bold text-[var(--color-primary)]">
+        Select Loan Type
+      </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Personal Loan */}
+        <label
+          className={`border rounded p-4 flex flex-col items-center cursor-pointer ${
+            selected === "Personal" ? "border-[var(--color-primary)] bg-gray-50" : ""
+          }`}
+        >
+          <input
+            type="radio"
+            name="loanType"
+            value="Personal"
+            checked={selected === "Personal"}
+            onChange={() => setSelected("Personal")}
+            className="hidden"
+          />
+          <span className="text-3xl">👤</span>
+          <span className="mt-2 font-semibold">Personal Loan</span>
         </label>
-        <label>
-          <input type="radio" value="Home" {...register("loanType")} /> Home Loan
+
+        {/* Home Loan */}
+        <label
+          className={`border rounded p-4 flex flex-col items-center cursor-pointer ${
+            selected === "Home" ? "border-[var(--color-primary)] bg-gray-50" : ""
+          }`}
+        >
+          <input
+            type="radio"
+            name="loanType"
+            value="Home"
+            checked={selected === "Home"}
+            onChange={() => setSelected("Home")}
+            className="hidden"
+          />
+          <span className="text-3xl">🏠</span>
+          <span className="mt-2 font-semibold">Home Loan</span>
         </label>
-        <label>
-          <input type="radio" value="Business" {...register("loanType")} /> Business Loan
+
+        {/* Self-Employed Loan */}
+        <label
+          className={`border rounded p-4 flex flex-col items-center cursor-pointer ${
+            selected === "Self-Employed" ? "border-[var(--color-primary)] bg-gray-50" : ""
+          }`}
+        >
+          <input
+            type="radio"
+            name="loanType"
+            value="Self-Employed"
+            checked={selected === "Self-Employed"}
+            onChange={() => setSelected("Self-Employed")}
+            className="hidden"
+          />
+          <span className="text-3xl">💼</span>
+          <span className="mt-2 font-semibold">Self‑Employed Loan</span>
         </label>
       </div>
-      {errors.loanType && <p className="text-red-500">{errors.loanType.message}</p>}
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Next
-      </button>
-    </form>
+
+      <div className="flex justify-end">
+        <button type="button" onClick={handleNext} className="primary">
+          Next
+        </button>
+      </div>
+    </div>
   );
 }
