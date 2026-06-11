@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
 import { useFormStore } from "../store/formStore";
+import { useState } from "react";
 
 interface Props {
   onNext: () => void;
@@ -8,84 +8,64 @@ interface Props {
 
 export default function SignatureStep({ onNext, onBack }: Props) {
   const { setSignatureInfo } = useFormStore();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-
-  const startDrawing = (e: React.MouseEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.beginPath();
-    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    setIsDrawing(true);
-  };
-
-  const draw = (e: React.MouseEvent) => {
-    if (!isDrawing) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    ctx.stroke();
-  };
-
-  const stopDrawing = () => {
-    setIsDrawing(false);
-  };
-
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  };
+  const [signature, setSignature] = useState("");
+  const [agree, setAgree] = useState(false);
 
   const handleSubmit = () => {
-  const canvas = canvasRef.current;
-  if (!canvas) return;
-  const dataUrl = canvas.toDataURL("image/png");
-
-  setSignatureInfo({
-    agree: true,            // ✅ mark agreement
-    signature: dataUrl,     // ✅ store signature image as string
-  });
-  onNext();
-};
-
+    setSignatureInfo({ signature, agree });
+    onNext();
+  };
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold text-[var(--color-primary)]">
-        Signature
-      </h2>
+    <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Header bar */}
+      <header className="bg-[var(--color-primary)] py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
 
-      <canvas
-        ref={canvasRef}
-        width={400}
-        height={200}
-        className="border rounded bg-gray-50 cursor-crosshair"
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
-      />
+      {/* Main content */}
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="text-xl font-bold text-[var(--color-primary)]">
+          Signature & Agreement
+        </h2>
 
-      <div className="flex gap-2">
-        <button type="button" onClick={clearCanvas} className="secondary">
-          Clear
-        </button>
-        <button type="button" onClick={onBack} className="secondary">
-          Back
-        </button>
-        <button type="button" onClick={handleSubmit} className="primary">
-          Next
-        </button>
-      </div>
+        <div className="space-y-4">
+          <div>
+            <label>Signature</label>
+            <input
+              type="text"
+              value={signature}
+              onChange={(e) => setSignature(e.target.value)}
+              className="border rounded p-2 w-full"
+              placeholder="Type your full name"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={agree}
+              onChange={(e) => setAgree(e.target.checked)}
+            />
+            <span>I agree to the terms and conditions</span>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex gap-2 justify-end">
+          <button type="button" onClick={onBack} className="secondary">
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="primary"
+            disabled={!signature || !agree}
+          >
+            Next
+          </button>
+        </div>
+      </main>
     </div>
   );
 }

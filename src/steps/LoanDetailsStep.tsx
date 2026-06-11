@@ -44,48 +44,61 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 bg-white p-6 rounded shadow"
-    >
-      <h2 className="text-xl font-bold text-[var(--color-primary)]">
-        Loan Details
-      </h2>
+    <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Header bar */}
+      <header className="bg-[var(--color-primary)] py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
 
-      <div>
-        <label>Loan Amount</label>
-        <input type="number" {...register("amount")} />
-        {errors.amount && <p className="error-text">{errors.amount.message}</p>}
-      </div>
+      {/* Main content */}
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="text-xl font-bold text-[var(--color-primary)]">
+          Loan Details
+        </h2>
 
-      <div>
-        <label>Tenure (months)</label>
-        <input type="number" {...register("durationMonths")} />
-        {errors.durationMonths && <p className="error-text">{errors.durationMonths.message}</p>}
-      </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label>Loan Amount</label>
+            <input type="number" {...register("amount")} />
+            {errors.amount && (
+              <p className="error-text">{errors.amount.message}</p>
+            )}
+          </div>
 
-      <div>
-        <label>Purpose</label>
-        <input {...register("purpose")} />
-        {errors.purpose && <p className="error-text">{errors.purpose.message}</p>}
-      </div>
+          <div>
+            <label>Tenure (months)</label>
+            <input type="number" {...register("durationMonths")} />
+            {errors.durationMonths && (
+              <p className="error-text">{errors.durationMonths.message}</p>
+            )}
+          </div>
 
-      {/* ✅ Live EMI preview */}
-      <div className="bg-gray-50 p-4 rounded">
-        <p className="text-sm text-gray-600">Estimated EMI:</p>
-        <p className="text-lg font-semibold text-[var(--color-primary)]">
-          ₹{emi.toFixed(2)}
-        </p>
-      </div>
+          <div>
+            <label>Purpose</label>
+            <input {...register("purpose")} />
+            {errors.purpose && (
+              <p className="error-text">{errors.purpose.message}</p>
+            )}
+          </div>
 
-      <div className="flex gap-2">
-        <button type="button" onClick={onBack} className="secondary">
-          Back
-        </button>
-        <button type="submit" className="primary">
-          Next
-        </button>
-      </div>
-    </form>
+          {/* ✅ Live EMI preview */}
+          <div className="bg-gray-50 p-4 rounded">
+            <p className="text-sm text-gray-600">Estimated EMI:</p>
+            <p className="text-lg font-semibold text-[var(--color-primary)]">
+              ₹{emi.toFixed(2)}
+            </p>
+          </div>
+
+          <div className="flex gap-2">
+            <button type="button" onClick={onBack} className="secondary">
+              Back
+            </button>
+            <button type="submit" className="primary">
+              Next
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 }

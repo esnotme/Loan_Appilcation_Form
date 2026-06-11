@@ -15,43 +15,51 @@ export default function PreApprovalSummary() {
       : 0;
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold text-[var(--color-primary)]">
-        Pre‑Approval Summary
-      </h2>
+    <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Header bar */}
+      <header className="bg-[var(--color-primary)] py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
 
-      {/* Applicant */}
-      <section className="border-b pb-4">
-        <h3 className="font-semibold text-gray-700">Applicant</h3>
-        <p>{personalInfo?.fullName}</p>
-        <p>{personalInfo?.email}</p>
-      </section>
+      {/* Main content */}
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="text-xl font-bold text-[var(--color-primary)]">
+          Pre‑Approval Summary
+        </h2>
 
-      {/* Loan Breakdown */}
-      <section className="border-b pb-4">
-        <h3 className="font-semibold text-gray-700">Loan Breakdown</h3>
-        <p>Principal: ₹{principal.toLocaleString()}</p>
-        <p>Tenure: {months} months</p>
-        <p>Estimated EMI: ₹{emi.toFixed(2)}</p>
-      </section>
+        {/* Applicant */}
+        <section className="border-b pb-4">
+          <h3 className="font-semibold text-gray-700">Applicant</h3>
+          <p>{personalInfo?.fullName}</p>
+          <p>{personalInfo?.email}</p>
+        </section>
 
-      {/* Compliance */}
-      <section className="border-b pb-4">
-        <h3 className="font-semibold text-gray-700">Disclosures</h3>
-        <ul className="list-disc pl-5 text-gray-600 text-sm">
-          <li>Cooling‑off period: 14 days</li>
-          <li>Grievance officer: Mr. R. Sharma (grievance@bank.com)</li>
-          <li>Interest rate subject to credit score verification</li>
-          <li>Final approval contingent on document verification</li>
-        </ul>
-      </section>
+        {/* Loan Breakdown */}
+        <section className="border-b pb-4">
+          <h3 className="font-semibold text-gray-700">Loan Breakdown</h3>
+          <p>Principal: ₹{principal.toLocaleString()}</p>
+          <p>Tenure: {months} months</p>
+          <p>Estimated EMI: ₹{emi.toFixed(2)}</p>
+        </section>
 
-      {/* CTA */}
-      <div className="flex justify-end">
-        <button type="button" className="primary">
-          Submit Application
-        </button>
-      </div>
+        {/* Compliance */}
+        <section className="border-b pb-4">
+          <h3 className="font-semibold text-gray-700">Disclosures</h3>
+          <ul className="list-disc pl-5 text-gray-600 text-sm">
+            <li>Cooling‑off period: 14 days</li>
+            <li>Grievance officer: Mr. R. Sharma (grievance@bank.com)</li>
+            <li>Interest rate subject to credit score verification</li>
+            <li>Final approval contingent on document verification</li>
+          </ul>
+        </section>
+
+        {/* CTA */}
+        <div className="flex justify-end">
+          <button type="button" className="primary">
+            Submit Application
+          </button>
+        </div>
+      </main>
     </div>
   );
 }

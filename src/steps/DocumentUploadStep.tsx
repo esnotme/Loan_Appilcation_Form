@@ -78,59 +78,69 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold text-[var(--color-primary)]">
-        Document Upload
-      </h2>
+    <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Header bar */}
+      <header className="bg-[var(--color-primary)] py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
 
-      <div
-        {...getRootProps()}
-        className="border-2 border-dashed border-gray-400 p-6 rounded cursor-pointer hover:bg-gray-50"
-        aria-label="File upload area"
-      >
-        <input {...getInputProps()} />
-        <p className="text-gray-600">Drag & drop files here, or click to select</p>
-      </div>
+      {/* Main content */}
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="text-xl font-bold text-[var(--color-primary)]">
+          Document Upload
+        </h2>
 
-      {errors.length > 0 && (
-        <ul className="error-text list-disc pl-5">
-          {errors.map((err, i) => (
-            <li key={i}>{err}</li>
+        <div
+          {...getRootProps()}
+          className="border-2 border-dashed border-gray-400 p-6 rounded cursor-pointer hover:bg-gray-50"
+          aria-label="File upload area"
+        >
+          <input {...getInputProps()} />
+          <p className="text-gray-600">
+            Drag & drop files here, or click to select
+          </p>
+        </div>
+
+        {errors.length > 0 && (
+          <ul className="error-text list-disc pl-5">
+            {errors.map((err, i) => (
+              <li key={i}>{err}</li>
+            ))}
+          </ul>
+        )}
+
+        <div className="grid grid-cols-3 gap-4">
+          {files.map((file, i) => (
+            <div key={i} className="border p-2 rounded text-center relative">
+              {file.type === "application/pdf" ? (
+                <span className="text-sm text-gray-700">📄 {file.name}</span>
+              ) : (
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  className="h-24 w-full object-cover rounded"
+                />
+              )}
+              <button
+                type="button"
+                onClick={() => removeFile(i)}
+                className="absolute top-1 right-1 text-xs text-red-500"
+              >
+                ✕
+              </button>
+            </div>
           ))}
-        </ul>
-      )}
+        </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        {files.map((file, i) => (
-          <div key={i} className="border p-2 rounded text-center relative">
-            {file.type === "application/pdf" ? (
-              <span className="text-sm text-gray-700">📄 {file.name}</span>
-            ) : (
-              <img
-                src={URL.createObjectURL(file)}
-                alt={file.name}
-                className="h-24 w-full object-cover rounded"
-              />
-            )}
-            <button
-              type="button"
-              onClick={() => removeFile(i)}
-              className="absolute top-1 right-1 text-xs text-red-500"
-            >
-              ✕
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex gap-2">
-        <button type="button" onClick={onBack} className="secondary">
-          Back
-        </button>
-        <button type="button" onClick={handleSubmit} className="primary">
-          Next
-        </button>
-      </div>
+        <div className="flex gap-2">
+          <button type="button" onClick={onBack} className="secondary">
+            Back
+          </button>
+          <button type="button" onClick={handleSubmit} className="primary">
+            Next
+          </button>
+        </div>
+      </main>
     </div>
   );
 }

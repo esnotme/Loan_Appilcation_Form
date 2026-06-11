@@ -10,20 +10,22 @@ import SignatureStep from "../steps/SignatureStep";
 import ReviewStep from "../steps/ReviewStep";
 import PreApprovalSummary from "../steps/PreApprovalSummary";
 import AutoSaveWrapper from "../components/AutoSaveWrapper";
-import ProgressBar from "../components/ProgressBar"; // ✅ add this
+import ProgressBar from "../components/ProgressBar";
 
 export default function Wizard() {
   const [step, setStep] = useState(0);
-  const totalSteps = 10; // ✅ update to match your flow
+  const totalSteps = 10;
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
   return (
     <AutoSaveWrapper>
-      <div className="max-w-2xl mx-auto p-8 bg-white shadow-lg rounded-lg space-y-6">
-        {/* ✅ Progress bar at the top */}
-        <ProgressBar currentStep={step} totalSteps={totalSteps} />
+      <div className="min-h-screen bg-[var(--color-bg)]">
+        {/* ✅ Progress bar at the very top */}
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <ProgressBar currentStep={step} totalSteps={totalSteps} />
+        </div>
 
         {/* ✅ Step content */}
         {step === 0 && <LoanTypeStep onNext={nextStep} />}

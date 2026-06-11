@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { employmentSchema } from "../schemas/employmentSchemas";
 import { useFormStore } from "../store/formStore";
-import { useState } from "react";
 
 interface Props {
   onNext: () => void;
@@ -11,7 +10,6 @@ interface Props {
 
 export default function EmploymentStep({ onNext, onBack }: Props) {
   const { setEmploymentInfo } = useFormStore();
-  const [employmentType, setEmploymentType] = useState<"Salaried" | "Self-Employed" | "Other">("Salaried");
 
   const {
     register,
@@ -19,93 +17,85 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(employmentSchema),
-    mode: "onChange",
   });
 
   const onSubmit = (data: any) => {
-    setEmploymentInfo({
-      employmentType,
-      employer: data.employer || "",
-      jobTitle: data.jobTitle || "",
-      income: data.income || "",
-      yearsEmployed: data.yearsEmployed || "",
-    });
+    setEmploymentInfo(data);
     onNext();
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 bg-white p-6 rounded shadow"
-    >
-      <h2 className="text-xl font-bold text-[var(--color-primary)]">
-        Employment Information
-      </h2>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      {/* Dark blue header bar */}
+      <header className="bg-blue-900 py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
 
-      {/* Employment Type Selector */}
-      <div>
-        <label>Employment Type</label>
-        <select
-          value={employmentType}
-          onChange={(e) => setEmploymentType(e.target.value as any)}
-          className="border rounded p-2 w-full"
+      {/* Centered card */}
+      <main className="flex-1 flex items-center justify-center p-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full max-w-2xl space-y-6 bg-white p-8 rounded-lg shadow-lg border-2 border-blue-400"
         >
-          <option value="Salaried">Salaried</option>
-          <option value="Self-Employed">Self-Employed</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+          <h2 className="text-xl font-bold text-blue-900">
+            Employment Information
+          </h2>
 
-      {/* Conditional Fields */}
-      {employmentType === "Salaried" && (
-        <>
           <div>
-            <label>Employer Name</label>
-            <input {...register("employer")} />
-            {errors.employer && <p className="error-text">{errors.employer.message}</p>}
+            <label className="block mb-1 font-medium">Employment Type</label>
+            <select {...register("employmentType")} className="w-full border rounded p-2">
+              <option value="">Select type</option>
+              <option value="salaried">Salaried</option>
+              <option value="selfEmployed">Self‑Employed</option>
+            </select>
+            {errors.employmentType && (
+              <p className="text-red-600 text-sm">{errors.employmentType.message}</p>
+            )}
           </div>
 
           <div>
-            <label>Job Title</label>
-            <input {...register("jobTitle")} />
-            {errors.jobTitle && <p className="error-text">{errors.jobTitle.message}</p>}
+            <label className="block mb-1 font-medium">Employer Name</label>
+            <input {...register("employer")} className="w-full border rounded p-2" />
+            {errors.employer && (
+              <p className="text-red-600 text-sm">{errors.employer.message}</p>
+            )}
           </div>
 
           <div>
-            <label>Monthly Income</label>
-            <input type="number" {...register("income")} />
-            {errors.income && <p className="error-text">{errors.income.message}</p>}
+            <label className="block mb-1 font-medium">Job Title</label>
+            <input {...register("jobTitle")} className="w-full border rounded p-2" />
+            {errors.jobTitle && (
+              <p className="text-red-600 text-sm">{errors.jobTitle.message}</p>
+            )}
           </div>
 
           <div>
-            <label>Years Employed</label>
-            <input type="number" {...register("yearsEmployed")} />
-            {errors.yearsEmployed && <p className="error-text">{errors.yearsEmployed.message}</p>}
+            <label className="block mb-1 font-medium">Monthly Income</label>
+            <input type="number" {...register("income")} className="w-full border rounded p-2" />
+            {errors.income && (
+              <p className="text-red-600 text-sm">{errors.income.message}</p>
+            )}
           </div>
-        </>
-      )}
 
-      {employmentType === "Self-Employed" && (
-        <p className="text-sm text-gray-600">
-          Please upload your ITR documents in the next step.
-        </p>
-      )}
+          <div>
+            <label className="block mb-1 font-medium">Years Employed</label>
+            <input type="number" {...register("yearsEmployed")} className="w-full border rounded p-2" />
+            {errors.yearsEmployed && (
+              <p className="text-red-600 text-sm">{errors.yearsEmployed.message}</p>
+            )}
+          </div>
 
-      {employmentType === "Other" && (
-        <p className="text-sm text-gray-600">
-          No additional details required for “Other” employment type.
-        </p>
-      )}
-
-      {/* Navigation */}
-      <div className="flex gap-2">
-        <button type="button" onClick={onBack} className="secondary">
-          Back
-        </button>
-        <button type="submit" className="primary">
-          Next
-        </button>
-      </div>
-    </form>
+          <div className="flex gap-2 justify-end">
+            <button type="button" onClick={onBack} className="secondary">
+              Back
+            </button>
+            <button type="submit" className="primary">
+              Next
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 }
+

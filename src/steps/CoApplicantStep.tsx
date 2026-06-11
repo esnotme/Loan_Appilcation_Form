@@ -31,70 +31,77 @@ export default function CoApplicantStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 bg-white p-6 rounded shadow"
-    >
-      <h2 className="text-xl font-bold text-[var(--color-primary)]">
-        Co‑Applicant
-      </h2>
+    <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Header bar */}
+      <header className="bg-[var(--color-primary)] py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
 
-      {/* Toggle */}
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={hasCoApplicant}
-          onChange={(e) => setHasCoApplicant(e.target.checked)}
-        />
-        <span>Add a co‑applicant</span>
-      </div>
+      {/* Main form content */}
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="text-xl font-bold text-[var(--color-primary)]">
+          Co‑Applicant
+        </h2>
 
-      {/* Conditional fields */}
-      {hasCoApplicant && (
-        <div className="space-y-4">
-          <div>
-            <label>Full Name</label>
-            <input {...register("fullName")} />
-            {errors.fullName && (
-              <p className="error-text">{errors.fullName.message}</p>
-            )}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Toggle */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={hasCoApplicant}
+              onChange={(e) => setHasCoApplicant(e.target.checked)}
+            />
+            <span>Add a co‑applicant</span>
           </div>
 
-          <div>
-            <label>Relationship</label>
-            <input {...register("relationship")} />
-            {errors.relationship && (
-              <p className="error-text">{errors.relationship.message}</p>
-            )}
-          </div>
+          {/* Conditional fields */}
+          {hasCoApplicant && (
+            <div className="space-y-4">
+              <div>
+                <label>Full Name</label>
+                <input {...register("fullName")} />
+                {errors.fullName && (
+                  <p className="error-text">{errors.fullName.message}</p>
+                )}
+              </div>
 
-          <div>
-            <label>Email</label>
-            <input type="email" {...register("email")} />
-            {errors.email && (
-              <p className="error-text">{errors.email.message}</p>
-            )}
-          </div>
+              <div>
+                <label>Relationship</label>
+                <input {...register("relationship")} />
+                {errors.relationship && (
+                  <p className="error-text">{errors.relationship.message}</p>
+                )}
+              </div>
 
-          <div>
-            <label>Phone</label>
-            <input type="tel" {...register("phone")} />
-            {errors.phone && (
-              <p className="error-text">{errors.phone.message}</p>
-            )}
-          </div>
-        </div>
-      )}
+              <div>
+                <label>Email</label>
+                <input type="email" {...register("email")} />
+                {errors.email && (
+                  <p className="error-text">{errors.email.message}</p>
+                )}
+              </div>
 
-      {/* Navigation */}
-      <div className="flex gap-2">
-        <button type="button" onClick={onBack} className="secondary">
-          Back
-        </button>
-        <button type="submit" className="primary">
-          Next
-        </button>
-      </div>
-    </form>
+              <div>
+                <label>Phone</label>
+                <input type="tel" {...register("phone")} />
+                {errors.phone && (
+                  <p className="error-text">{errors.phone.message}</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Navigation */}
+          <div className="flex gap-2">
+            <button type="button" onClick={onBack} className="secondary">
+              Back
+            </button>
+            <button type="submit" className="primary">
+              Next
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 }

@@ -4,41 +4,55 @@
 
 /* Custom theme overrides */
 :root {
-  --color-primary: #4B0082;   /* Deep Indigo */
-  --color-secondary: #008080; /* Teal */
-  --color-bg: #F9FAFB;        /* Soft off-white */
+  --color-primary: #0066cc;   /* Blue header + accents */
+  --color-secondary: #004080; /* Darker blue for hover/secondary */
+  --color-bg: #ffffff;        /* White background */
   --color-error: #DC2626;     /* Accessible red */
   --color-success: #16A34A;   /* Accessible green */
+
+  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
   @apply bg-[var(--color-bg)] text-gray-900 font-sans;
 }
 
+/* Header bar */
+header {
+  @apply bg-[var(--color-primary)] py-4 px-6;
+}
+
+header h1 {
+  @apply text-white text-2xl font-bold;
+}
+
+/* Buttons */
 button {
   @apply rounded px-4 py-2 font-medium transition-colors;
 }
 
 button.primary {
-  @apply bg-[var(--color-primary)] text-white hover:bg-indigo-700;
+  @apply bg-[var(--color-primary)] text-white hover:bg-[var(--color-secondary)];
 }
 
 button.secondary {
-  @apply bg-[var(--color-secondary)] text-white hover:bg-teal-700;
+  @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
 }
 
 button.danger {
   @apply bg-[var(--color-error)] text-white hover:bg-red-700;
 }
 
+/* Inputs */
 input, select, textarea {
-  @apply border border-gray-300 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)];
+  @apply border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)];
 }
 
 label {
   @apply font-semibold block mb-1;
 }
 
+/* Error text */
 .error-text {
   @apply text-[var(--color-error)] text-sm mt-1;
 }
