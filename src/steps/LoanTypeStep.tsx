@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loanTypeSchema } from "../schemas/loanTypeSchemas"; // ✅ new schema
+import { loanTypeSchema } from "../schemas/loanTypeSchemas";
 import { useFormStore } from "../store/formStore";
+import Layout from "../layout";
+
 
 interface Props {
   onNext: () => void;
-  onBack?: () => void;
 }
 
-export default function LoanTypeStep({ onNext, onBack }: Props) {
+export default function LoanTypeStep({ onNext }: Props) {
   const { loanDetails, setLoanDetails } = useFormStore();
 
   const {
@@ -23,66 +24,55 @@ export default function LoanTypeStep({ onNext, onBack }: Props) {
     setLoanDetails({
       ...loanDetails,
       loanType: data.loanType,
-      amount: loanDetails?.amount ?? "",           // ✅ ensure string
-      purpose: loanDetails?.purpose ?? "",
-      durationMonths: loanDetails?.durationMonths ?? "",
-      propertyAddress: loanDetails?.propertyAddress ?? "",
-      propertyValue: loanDetails?.propertyValue ?? "",
-      registrationNumber: loanDetails?.registrationNumber ?? "",
-      turnover: loanDetails?.turnover ?? "",
+      amount: loanDetails?.amount || "",
+      purpose: loanDetails?.purpose || "",
+      durationMonths: loanDetails?.durationMonths || "",
+      propertyAddress: loanDetails?.propertyAddress || "",
+      propertyValue: loanDetails?.propertyValue || "",
+      registrationNumber: loanDetails?.registrationNumber || "",
+      turnover: loanDetails?.turnover || "",
     });
     onNext();
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
-      <header className="bg-[var(--color-primary)] py-4 px-6">
-        <h1 className="text-white text-2xl font-bold">Application Form</h1>
-      </header>
+    <Layout>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg border-2 border-blue-400"
+      >
+        <h2 className="text-xl font-bold text-blue-900">Select Loan Type</h2>
 
-      <main className="max-w-4xl mx-auto p-6 space-y-6">
-        <h2 className="text-xl font-bold text-[var(--color-primary)]">
-          Select Loan Type
-        </h2>
+        <div className="space-y-4">
+          <label className="flex items-center gap-2">
+            <input type="radio" value="personal" {...register("loanType")} />
+            <span>Personal</span>
+          </label>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <label className="flex items-center gap-2">
-              <input type="radio" value="personal" {...register("loanType")} />
-              <span>Personal Loan</span>
-            </label>
+          <label className="flex items-center gap-2">
+            <input type="radio" value="business" {...register("loanType")} />
+            <span>Business</span>
+          </label>
 
-            <label className="flex items-center gap-2">
-              <input type="radio" value="home" {...register("loanType")} />
-              <span>Home Loan</span>
-            </label>
+          <label className="flex items-center gap-2">
+            <input type="radio" value="home" {...register("loanType")} />
+            <span>Home</span>
+          </label>
+        </div>
 
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                value="selfEmployed"
-                {...register("loanType")}
-              />
-              <span>Self‑Employed Loan</span>
-            </label>
-          </div>
+        {errors.loanType && (
+          <p className="text-red-600 text-sm">{errors.loanType.message}</p>
+        )}
 
-          {errors.loanType && (
-            <p className="error-text">{errors.loanType.message}</p>
-          )}
-
-          <div className="flex gap-2">
-            {onBack && (
-              <button type="button" onClick={onBack} className="secondary">
-                Back
-              </button>
-            )}
-            <button type="submit" className="primary">
-              Next
-            </button>
-          </div>
-        </form>
-      </main>
-    </div>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Next →
+          </button>
+        </div>
+      </form>
+    </Layout>
   );
 }
