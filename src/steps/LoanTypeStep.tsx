@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loanTypeSchema } from "../schemas/loanTypeSchemas";
 import { useFormStore } from "../store/formStore";
-import Layout from "../layout";
+import Layout from "../components/layout";
 
 
 interface Props {

@@ -1,11 +1,6 @@
-import Wizard from "./components/Wizard";
+import LoanTypeStep from "./steps/LoanTypeStep";
 
-function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <Wizard />
-    </div>
-  );
+export default function App() {
+  console.log("🟢 App component rendering...");
+  return <LoanTypeStep onNext={() => console.log("➡️ Next step clicked")} />;
 }
-
-export default App;
