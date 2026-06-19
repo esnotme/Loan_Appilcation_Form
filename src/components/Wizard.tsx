@@ -16,18 +16,16 @@ export default function Wizard() {
   const [step, setStep] = useState(0);
   const totalSteps = 10;
 
-  const nextStep = () => setStep((s) => s + 1);
+  const nextStep = () => setStep((s) => Math.min(s + 1, totalSteps - 1));
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
   return (
     <AutoSaveWrapper>
-      <div className="min-h-screen bg-[var(--color-bg)]">
-        {/* ✅ Progress bar at the very top */}
+      <div className="min-h-screen bg-gray-100">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <ProgressBar currentStep={step} totalSteps={totalSteps} />
         </div>
 
-        {/* ✅ Step content */}
         {step === 0 && <LoanTypeStep onNext={nextStep} />}
         {step === 1 && <PersonalInfoStep onNext={nextStep} onBack={prevStep} />}
         {step === 2 && <EmploymentStep onNext={nextStep} onBack={prevStep} />}
@@ -36,7 +34,7 @@ export default function Wizard() {
         {step === 5 && <AddressStep onNext={nextStep} onBack={prevStep} />}
         {step === 6 && <DocumentUploadStep onNext={nextStep} onBack={prevStep} />}
         {step === 7 && <SignatureStep onNext={nextStep} onBack={prevStep} />}
-        {step === 8 && <ReviewStep onBack={prevStep} onNext={nextStep} />}
+        {step === 8 && <ReviewStep onNext={nextStep} onBack={prevStep} />}
         {step === 9 && <PreApprovalSummary />}
       </div>
     </AutoSaveWrapper>

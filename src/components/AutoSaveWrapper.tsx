@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
 import { useFormStore } from "../store/formStore";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export default function AutoSaveWrapper({ children }: Props) {
-  const formData = useFormStore(); // ✅ grab all form data
+export default function AutoSaveWrapper({ children }: { children: React.ReactNode }) {
+  const formData = useFormStore((state) => state);
   const [status, setStatus] = useState<"idle" | "saving" | "saved">("idle");
 
   useEffect(() => {
-    if (!formData) return;
-
     setStatus("saving");
 
     const timeout = setTimeout(() => {
-      // ✅ simulate persistence (replace with API call if needed)
       localStorage.setItem("loanFormData", JSON.stringify(formData));
       setStatus("saved");
 
-      // reset back to idle after 2s
-      setTimeout(() => setStatus("idle"), 2000);
+      setTimeout(() => setStatus("idle"), 1500);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -30,7 +22,6 @@ export default function AutoSaveWrapper({ children }: Props) {
     <div className="relative">
       {children}
 
-      {/* ✅ Status indicator */}
       {status !== "idle" && (
         <div className="absolute bottom-2 right-4 text-xs text-gray-500">
           {status === "saving" && "Saving..."}

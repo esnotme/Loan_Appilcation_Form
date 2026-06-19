@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressSchema } from "../schemas/addressSchemas";
+import { addressSchema } from "../schemas/loanSchemas";
 import { useFormStore } from "../store/formStore";
 import { useState, useEffect } from "react";
 
@@ -46,22 +46,20 @@ export default function AddressStep({ onNext, onBack }: Props) {
   }, [pin, setValue]);
 
   const onSubmit = (data: any) => {
-    const payload = {
+    setAddressInfo({
       ...data,
-      permanentAddress: sameAsCurrent ? { ...data } : data.permanentAddress,
-    };
-    setAddressInfo(payload);
+      permanentAddress: sameAsCurrent ? data : null,
+    });
+
     onNext();
   };
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
-      {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
       </header>
 
-      {/* Main form content */}
       <main className="max-w-4xl mx-auto p-6 space-y-6">
         <h2 className="text-xl font-bold text-[var(--color-primary)]">
           Address Information
@@ -70,37 +68,28 @@ export default function AddressStep({ onNext, onBack }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
             <label>Street</label>
-            <input {...register("street")} />
-            {errors.street && (
-              <p className="error-text">{errors.street.message}</p>
-            )}
+            <input placeholder="Enter street" {...register("street")} />
+            {errors.street && <p>{errors.street.message}</p>}
           </div>
 
           <div>
             <label>Postal Code</label>
-            <input {...register("postalCode")} />
-            {errors.postalCode && (
-              <p className="error-text">{errors.postalCode.message}</p>
-            )}
+            <input placeholder="Enter postal code" {...register("postalCode")} />
+            {errors.postalCode && <p>{errors.postalCode.message}</p>}
           </div>
 
           <div>
             <label>City</label>
-            <input {...register("city")} />
-            {errors.city && (
-              <p className="error-text">{errors.city.message}</p>
-            )}
+            <input placeholder="Auto-filled city" {...register("city")} />
           </div>
 
           <div>
             <label>State</label>
-            <input {...register("state")} />
-            {errors.state && (
-              <p className="error-text">{errors.state.message}</p>
-            )}
+            <input placeholder="Auto-filled state" {...register("state")} />
           </div>
 
           <div className="flex items-center gap-2">
+            <label>Permanent Address</label>
             <input
               type="checkbox"
               checked={sameAsCurrent}

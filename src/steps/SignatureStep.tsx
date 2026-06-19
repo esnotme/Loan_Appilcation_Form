@@ -42,6 +42,7 @@ export default function SignatureStep({ onNext, onBack }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
+            <label>Agree to Terms</label>
             <input
               type="checkbox"
               checked={agree}

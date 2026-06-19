@@ -46,6 +46,7 @@ export default function CoApplicantStep({ onNext, onBack }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Toggle */}
           <div className="flex items-center gap-2">
+            <label>Add a co‑applicant</label>
             <input
               type="checkbox"
               checked={hasCoApplicant}

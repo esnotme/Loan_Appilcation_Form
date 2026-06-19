@@ -1,6 +1,5 @@
-import LoanTypeStep from "./steps/LoanTypeStep";
+import Wizard from "./components/Wizard";
 
 export default function App() {
-  console.log("🟢 App component rendering...");
-  return <LoanTypeStep onNext={() => console.log("➡️ Next step clicked")} />;
+  return <Wizard />;
 }
