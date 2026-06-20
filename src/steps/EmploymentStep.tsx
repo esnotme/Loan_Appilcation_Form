@@ -44,10 +44,11 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
           <div>
             <label className="block mb-1 font-medium">Employment Type</label>
             <select {...register("employmentType")} className="w-full border rounded p-2">
-              <option value="">Select type</option>
-              <option value="salaried">Salaried</option>
-              <option value="selfEmployed">Self‑Employed</option>
-            </select>
+  <option value="">Select type</option>
+  <option value="Salaried">Salaried</option>
+  <option value="Self-Employed">Self-Employed</option>
+  <option value="Other">Other</option>
+</select>
             {errors.employmentType && (
               <p className="text-red-600 text-sm">{errors.employmentType.message}</p>
             )}

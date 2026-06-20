@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressSchema } from "../schemas/loanSchemas";
+import { addressSchema } from "../schemas/addressSchemas";
 import { useFormStore } from "../store/formStore";
 import { useState, useEffect } from "react";
 

@@ -4,6 +4,7 @@ import { loanDetailsSchema } from "../schemas/loanDetailsSchemas";
 import { useFormStore } from "../store/formStore";
 import { useState, useEffect } from "react";
 
+
 interface Props {
   onNext: () => void;
   onBack: () => void;
