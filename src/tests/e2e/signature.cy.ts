@@ -18,7 +18,9 @@ const goToSignature = () => {
   cy.get('input[type="number"]').eq(0).type("100000");
   cy.get('input[type="number"]').eq(1).type("12");
   cy.contains("button", "Next").click();
-  cy.contains("button", "Next").click(); // skip co-applicant
+  // Co-applicant step — submit without enabling co-applicant
+  cy.contains("Co-Applicant Information").should("be.visible");
+  cy.contains("button", "Next").click();
   cy.get('input[placeholder="Enter street"]').type("123 Main Street");
   cy.get('input[placeholder="Enter postal code"]').type("400001");
   cy.contains("button", "Next").click();

@@ -40,8 +40,8 @@ export default function CoApplicantStep({ onNext, onBack }: Props) {
       {/* Main form content */}
       <main className="max-w-4xl mx-auto p-6 space-y-6">
         <h2 className="text-xl font-bold text-[var(--color-primary)]">
-          Co‑Applicant
-        </h2>
+  Co-Applicant Information
+</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Toggle */}

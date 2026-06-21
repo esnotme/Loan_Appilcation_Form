@@ -17,8 +17,9 @@ const goToAddress = () => {
   cy.contains("button", "Next").click();
   cy.get('input[type="number"]').eq(0).type("100000");
   cy.get('input[type="number"]').eq(1).type("12");
-  cy.contains("button", "Next").click();
-  // Skip co-applicant
+  // Co-applicant step — submit without enabling co-applicant
+cy.contains("Co-Applicant Information").should("be.visible");
+cy.contains("button", "Next").click();
   cy.contains("button", "Next").click();
 };
 
@@ -60,6 +61,6 @@ describe("Step 6 – Address Information", () => {
 
   it("Back button goes to Co-Applicant", () => {
     cy.contains("button", "Back").click();
-    cy.contains("Co-Applicant").should("be.visible");
+    cy.contains("Co-Applicant Information").should("be.visible");
   });
 });
