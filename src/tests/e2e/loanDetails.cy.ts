@@ -40,7 +40,7 @@ describe("Step 4 – Loan Details", () => {
   it("advances to Co-Applicant step with valid data", () => {
     cy.get('input[type="number"]').eq(0).type("100000");
     cy.get('input[type="number"]').eq(1).type("12");
-    cy.get('input[placeholder*="purpose"], input').last().type("Home renovation");
+    cy.get('input[placeholder="Enter purpose"]').type("Home renovation");
     cy.contains("button", "Next").click();
     cy.contains("Co-Applicant").should("be.visible");
   });

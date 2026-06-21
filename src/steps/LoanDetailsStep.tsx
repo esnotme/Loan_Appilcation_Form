@@ -12,8 +12,8 @@ interface Props {
 
 export default function LoanDetailsStep({ onNext, onBack }: Props) {
   const { setLoanDetails } = useFormStore();
+  const loanType = useFormStore((state) => state.loanType);
   const [emi, setEmi] = useState<number>(0);
-
   const {
     register,
     handleSubmit,
@@ -21,6 +21,9 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loanDetailsSchema),
+    defaultValues: {
+    loanType: loanType as "Personal" | "Home" | "Business" | undefined,
+  },
   });
 
   const amount = Number(watch("amount") || 0);
@@ -60,7 +63,7 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
             <label>Loan Amount</label>
-            <input type="number" {...register("amount")} />
+            <input type="number" {...register("amount")} placeholder="Enter loan amount"/>
             {errors.amount && (
               <p className="error-text">{errors.amount.message}</p>
             )}
@@ -68,7 +71,7 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
 
           <div>
             <label>Tenure (months)</label>
-            <input type="number" {...register("durationMonths")} />
+            <input type="number" {...register("durationMonths")}  placeholder="Enter tenure in months"/>
             {errors.durationMonths && (
               <p className="error-text">{errors.durationMonths.message}</p>
             )}
@@ -76,7 +79,7 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
 
           <div>
             <label>Purpose</label>
-            <input {...register("purpose")} />
+            <input {...register("purpose")} placeholder="Enter purpose"/>
             {errors.purpose && (
               <p className="error-text">{errors.purpose.message}</p>
             )}

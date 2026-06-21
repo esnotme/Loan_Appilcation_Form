@@ -20,9 +20,10 @@ export default function LoanTypeStep({ onNext }: Props) {
   });
 
   const onSubmit = (data: any) => {
-    setLoanType(data.loanType);
-    onNext();
-  };
+  const capitalised = data.loanType.charAt(0).toUpperCase() + data.loanType.slice(1);
+  setLoanType(capitalised);
+  onNext();
+};
 
   return (
     <Layout>
