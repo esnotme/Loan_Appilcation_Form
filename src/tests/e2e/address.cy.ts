@@ -16,9 +16,11 @@ const goToAddress = () => {
   cy.get('input[type="number"]').eq(1).type("3");
   cy.contains("button", "Next").click();
   cy.get('input[type="number"]').eq(0).type("100000");
-  cy.get('input[type="number"]').eq(1).type("12");
-  // Co-applicant step — submit without enabling co-applicant
+cy.get('input[type="number"]').eq(1).type("12");
+cy.contains("button", "Next").click(); // advance past Loan Details
+// Co-applicant step — submit without enabling co-applicant
 cy.contains("Co-Applicant Information").should("be.visible");
+cy.contains("button", "Next").click();
 cy.contains("button", "Next").click();
   cy.contains("button", "Next").click();
 };
