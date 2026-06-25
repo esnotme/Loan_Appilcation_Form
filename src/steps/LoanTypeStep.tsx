@@ -29,26 +29,32 @@ export default function LoanTypeStep({ onNext }: Props) {
     <Layout>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg border-2 border-blue-400"
+        className="step-card w-full max-w-md space-y-6 bg-white p-8 rounded-lg shadow-lg border-2 border-blue-400"
       >
         <h2 className="text-xl font-bold text-blue-900">
           Select Loan Type
         </h2>
 
+        <div className="radio-group">
         <label className="flex items-center gap-2">
           <input type="radio" value="personal" {...register("loanType")} />
           Personal
         </label>
+        </div>
 
+        <div className="radio-group">
         <label className="flex items-center gap-2">
           <input type="radio" value="home" {...register("loanType")} />
           Home
         </label>
+        </div>
 
+        <div className="radio-group">
         <label className="flex items-center gap-2">
           <input type="radio" value="business" {...register("loanType")} />
           Business
         </label>
+        </div>
 
         {errors.loanType && (
           <p className="text-red-600 text-sm">

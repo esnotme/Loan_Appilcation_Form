@@ -15,7 +15,7 @@ export default function PreApprovalSummary() {
       : 0;
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-[var(--color-bg)] step summary-step">
       {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -28,14 +28,14 @@ export default function PreApprovalSummary() {
         </h2>
 
         {/* Applicant */}
-        <section className="border-b pb-4">
+        <section className="summary-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Applicant</h3>
           <p>{personalInfo?.fullName}</p>
           <p>{personalInfo?.email}</p>
         </section>
 
         {/* Loan Breakdown */}
-        <section className="border-b pb-4">
+        <section className="summary-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Loan Breakdown</h3>
           <p>Principal: ₹{principal.toLocaleString()}</p>
           <p>Tenure: {months} months</p>
@@ -43,7 +43,7 @@ export default function PreApprovalSummary() {
         </section>
 
         {/* Compliance */}
-        <section className="border-b pb-4">
+        <section className="summary-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Disclosures</h3>
           <ul className="list-disc pl-5 text-gray-600 text-sm">
             <li>Cooling‑off period: 14 days</li>
@@ -54,7 +54,7 @@ export default function PreApprovalSummary() {
         </section>
 
         {/* CTA */}
-        <div className="flex justify-end">
+        <div className="cta-row flex justify-end">
           <button type="button" className="primary">
             Submit Application
           </button>

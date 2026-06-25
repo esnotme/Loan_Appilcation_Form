@@ -25,7 +25,7 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col employment-step">
       {/* Dark blue header bar */}
       <header className="bg-blue-900 py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -35,7 +35,7 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
       <main className="flex-1 flex items-center justify-center p-6">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-2xl space-y-6 bg-white p-8 rounded-lg shadow-lg border-2 border-blue-400"
+          className="step-card w-full max-w-2xl space-y-6 bg-white p-8 rounded-lg shadow-lg border-2 border-blue-400"
         >
           <h2 className="text-xl font-bold text-blue-900">
             Employment Information
@@ -54,7 +54,7 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Employer Name</label>
             <input {...register("employer")} className="w-full border rounded p-2" />
             {errors.employer && (
@@ -62,7 +62,7 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Job Title</label>
             <input {...register("jobTitle")} className="w-full border rounded p-2" />
             {errors.jobTitle && (
@@ -70,7 +70,7 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Monthly Income</label>
             <input type="number" {...register("income")} className="w-full border rounded p-2" />
             {errors.income && (
@@ -78,7 +78,7 @@ export default function EmploymentStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Years Employed</label>
             <input type="number" {...register("yearsEmployed")} className="w-full border rounded p-2" />
             {errors.yearsEmployed && (

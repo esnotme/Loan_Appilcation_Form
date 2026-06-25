@@ -17,7 +17,7 @@ export default function SignatureStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-[var(--color-bg)] srep signature-step">
       {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -31,24 +31,27 @@ export default function SignatureStep({ onNext, onBack }: Props) {
 
         <div className="space-y-4">
           <div>
-            <label>Signature</label>
+            <label htmlFor="signature">Signature</label>
             <input
+              id="signature"
               type="text"
               value={signature}
               onChange={(e) => setSignature(e.target.value)}
               className="border rounded p-2 w-full"
               placeholder="Type your full name"
+              title="Signature"
             />
           </div>
 
-          <div className="flex items-center gap-2">
-            <label>Agree to Terms</label>
+          <div className="field checkbox-field flex items-center gap-2">
             <input
+              id="agree"
               type="checkbox"
               checked={agree}
               onChange={(e) => setAgree(e.target.checked)}
+              title="Agree to terms"
             />
-            <span>I agree to the terms and conditions</span>
+            <label htmlFor="agree">I agree to the terms and conditions</label>
           </div>
         </div>
 

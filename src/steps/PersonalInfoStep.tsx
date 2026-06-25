@@ -40,7 +40,7 @@ export default function PersonalInfoStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col personal-step">
       {/* Dark blue header bar */}
       <header className="bg-blue-900 py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -56,7 +56,7 @@ export default function PersonalInfoStep({ onNext, onBack }: Props) {
             Personal Information
           </h2>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Full Name</label>
             <input {...register("fullName")} className="w-full border rounded p-2" />
             {errors.fullName && (
@@ -64,13 +64,13 @@ export default function PersonalInfoStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Date of Birth</label>
             <input type="date" {...register("dob")} className="w-full border rounded p-2" />
             {errors.dob && <p className="text-red-600 text-sm">{errors.dob.message}</p>}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Email</label>
             <input type="email" {...register("email")} className="w-full border rounded p-2" />
             {errors.email && (
@@ -78,7 +78,7 @@ export default function PersonalInfoStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Phone</label>
             <input type="tel" {...register("phone")} className="w-full border rounded p-2" />
             {errors.phone && (
@@ -86,13 +86,13 @@ export default function PersonalInfoStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">PAN</label>
             <input {...register("pan")} placeholder="ABCDE1234F" className="w-full border rounded p-2" />
             {errors.pan && <p className="text-red-600 text-sm">{errors.pan.message}</p>}
           </div>
 
-          <div>
+          <div className="field">
             <label className="block mb-1 font-medium">Aadhaar</label>
             <input {...register("aadhaar")} placeholder="12-digit number" className="w-full border rounded p-2" />
             {errors.aadhaar && (

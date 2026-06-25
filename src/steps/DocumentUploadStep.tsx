@@ -78,7 +78,7 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-[var(--color-bg)] step document-step">
       {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -92,7 +92,7 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
 
         <div
           {...getRootProps()}
-          className="border-2 border-dashed border-gray-400 p-6 rounded cursor-pointer hover:bg-gray-50"
+          className="dropzone border-2 border-dashed border-gray-400 p-6 rounded cursor-pointer hover:bg-gray-50"
           aria-label="File upload area"
         >
           <input {...getInputProps()} />
@@ -109,9 +109,9 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
           </ul>
         )}
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="file-grid grid grid-cols-3 gap-4">
           {files.map((file, i) => (
-            <div key={i} className="border p-2 rounded text-center relative">
+            <div key={i} className="file-card border p-2 rounded text-center relative">
               {file.type === "application/pdf" ? (
                 <span className="text-sm text-gray-700">📄 {file.name}</span>
               ) : (
