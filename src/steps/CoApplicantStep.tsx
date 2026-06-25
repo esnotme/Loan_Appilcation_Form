@@ -31,9 +31,9 @@ export default function CoApplicantStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-[var(--color-bg)] step co-applicant-step">
       {/* Header bar */}
-      <header className="bg-[var(--color-primary)] py-4 px-6">
+      <header className="step-header bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
       </header>
 
@@ -43,48 +43,49 @@ export default function CoApplicantStep({ onNext, onBack }: Props) {
   Co-Applicant Information
 </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="step-form space-y-6">
           {/* Toggle */}
-          <div className="flex items-center gap-2">
-            <label>Add a co‑applicant</label>
+          <div className="field toggle-field flex items-center gap-2">
+            <label htmlFor="hasCoApplicant">Add a co‑applicant</label>
             <input
+              id="hasCoApplicant"
               type="checkbox"
+              title="Add a co-applicant"
               checked={hasCoApplicant}
               onChange={(e) => setHasCoApplicant(e.target.checked)}
             />
-            <span>Add a co‑applicant</span>
           </div>
 
           {/* Conditional fields */}
           {hasCoApplicant && (
-            <div className="space-y-4">
-              <div>
-                <label>Full Name</label>
-                <input {...register("fullName")} />
+            <div className="conditional-fields space-y-4">
+              <div className="field">
+                <label htmlFor="fullName">Full Name</label>
+                <input id="fullName" placeholder="Full name" {...register("fullName")} />
                 {errors.fullName && (
                   <p className="error-text">{errors.fullName.message}</p>
                 )}
               </div>
 
-              <div>
-                <label>Relationship</label>
-                <input {...register("relationship")} />
+              <div className="field">
+                <label htmlFor="relationship">Relationship</label>
+                <input id="relationship" placeholder="e.g. Spouse, Parent" {...register("relationship")} />
                 {errors.relationship && (
                   <p className="error-text">{errors.relationship.message}</p>
                 )}
               </div>
 
-              <div>
-                <label>Email</label>
-                <input type="email" {...register("email")} />
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input id="email" type="email" placeholder="name@example.com" {...register("email")} />
                 {errors.email && (
                   <p className="error-text">{errors.email.message}</p>
                 )}
               </div>
 
-              <div>
-                <label>Phone</label>
-                <input type="tel" {...register("phone")} />
+              <div className="field">
+                <label htmlFor="phone">Phone</label>
+                <input id="phone" type="tel" placeholder="(555) 555-5555" {...register("phone")} />
                 {errors.phone && (
                   <p className="error-text">{errors.phone.message}</p>
                 )}

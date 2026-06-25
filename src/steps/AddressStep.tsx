@@ -55,35 +55,35 @@ export default function AddressStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
-      <header className="bg-[var(--color-primary)] py-4 px-6">
+    <div className="min-h-screen bg-[var(--color-bg)] step address-step">
+      <header className=" step-header bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
       </header>
 
-      <main className="max-w-4xl mx-auto p-6 space-y-6">
-        <h2 className="text-xl font-bold text-[var(--color-primary)]">
+      <main className="step-container max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="step-title text-xl font-bold text-[var(--color-primary)]">
           Address Information
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
+        <form onSubmit={handleSubmit(onSubmit)} className="step-form space-y-6">
+          <div className="field">
             <label>Street</label>
             <input placeholder="Enter street" {...register("street")} />
             {errors.street && <p>{errors.street.message}</p>}
           </div>
 
-          <div>
+          <div className="field">
             <label>Postal Code</label>
             <input placeholder="Enter postal code" {...register("postalCode")} />
             {errors.postalCode && <p>{errors.postalCode.message}</p>}
           </div>
 
-          <div>
+          <div className="field">
             <label>City</label>
             <input placeholder="Auto-filled city" {...register("city")} />
           </div>
 
-          <div>
+          <div className="field">
             <label>State</label>
             <input placeholder="Auto-filled state" {...register("state")} />
           </div>
@@ -92,6 +92,7 @@ export default function AddressStep({ onNext, onBack }: Props) {
             <label>Permanent Address</label>
             <input
               type="checkbox"
+              title="Permanent address same as current"
               checked={sameAsCurrent}
               onChange={(e) => setSameAsCurrent(e.target.checked)}
             />

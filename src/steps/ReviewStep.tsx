@@ -14,7 +14,7 @@ export default function ReviewStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-[var(--color-bg)] step review-step">
       {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -27,7 +27,7 @@ export default function ReviewStep({ onNext, onBack }: Props) {
         </h2>
 
         {/* Applicant */}
-        <section className="border-b pb-4">
+        <section className="review-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Personal Info</h3>
           <p>{personalInfo?.fullName}</p>
           <p>{personalInfo?.email}</p>
@@ -35,7 +35,7 @@ export default function ReviewStep({ onNext, onBack }: Props) {
         </section>
 
         {/* Employment */}
-        <section className="border-b pb-4">
+        <section className="review-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Employment</h3>
           <p>Type: {employmentInfo?.employmentType}</p>
           <p>Employer: {employmentInfo?.employer}</p>
@@ -44,7 +44,7 @@ export default function ReviewStep({ onNext, onBack }: Props) {
         </section>
 
         {/* Address */}
-        <section className="border-b pb-4">
+        <section className="review-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Address</h3>
           <p>{addressInfo?.street}</p>
           <p>{addressInfo?.city}, {addressInfo?.state}</p>
@@ -52,7 +52,7 @@ export default function ReviewStep({ onNext, onBack }: Props) {
         </section>
 
         {/* Loan Details */}
-        <section className="border-b pb-4">
+        <section className="review-section border-b pb-4">
           <h3 className="font-semibold text-gray-700">Loan Details</h3>
           <p>Amount: ₹{loanDetails?.amount}</p>
           <p>Tenure: {loanDetails?.durationMonths} months</p>

@@ -48,7 +48,7 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-[var(--color-bg)] step loan-details-step">
       {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -60,8 +60,8 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
           Loan Details
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
+        <form onSubmit={handleSubmit(onSubmit)} className="step-form space-y-6">
+          <div className="field">
             <label>Loan Amount</label>
             <input type="number" {...register("amount")} placeholder="Enter loan amount"/>
             {errors.amount && (
@@ -69,7 +69,7 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label>Tenure (months)</label>
             <input type="number" {...register("durationMonths")}  placeholder="Enter tenure in months"/>
             {errors.durationMonths && (
@@ -77,7 +77,7 @@ export default function LoanDetailsStep({ onNext, onBack }: Props) {
             )}
           </div>
 
-          <div>
+          <div className="field">
             <label>Purpose</label>
             <input {...register("purpose")} placeholder="Enter purpose"/>
             {errors.purpose && (

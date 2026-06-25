@@ -1,6 +1,204 @@
-@import "tailwindcss";
+/* =========================
+   DESIGN SYSTEM CORE
+========================= */
 
 :root {
-  --color-primary: #1e3a8a;
-  --color-bg: #f3f4f6;
+  --bg: #0b1220;
+  --surface: #111a2e;
+  --surface-2: #16213a;
+  --primary: #1e40af;
+  --primary-glow: #3b82f6;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255, 255, 255, 0.08);
+  --danger: #ef4444;
+  --radius: 14px;
+}
+
+/* Reset feel */
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto;
+  background: radial-gradient(circle at top, #0f172a, #050814);
+  color: var(--text);
+}
+
+/* =========================
+   STEP LAYOUT
+========================= */
+
+.step {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.step-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(10, 15, 30, 0.85);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Main container */
+.step-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Titles */
+.step-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 1rem;
+}
+
+/* =========================
+   CARD SYSTEM
+========================= */
+
+.step-form,
+.step-card {
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* =========================
+   INPUT SYSTEM
+========================= */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+input,
+select {
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  outline: none;
+  transition: 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary-glow);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* =========================
+   ERROR TEXT
+========================= */
+
+.error-text {
+  color: var(--danger);
+  font-size: 0.75rem;
+}
+
+/* =========================
+   BUTTON SYSTEM
+========================= */
+
+button {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  color: white;
+  padding: 0.75rem 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
+}
+
+.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(59, 130, 246, 0.35);
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 0.75rem 1.2rem;
+  border-radius: 10px;
+}
+
+.secondary:hover {
+  border-color: var(--primary-glow);
+  color: var(--text);
+}
+
+/* =========================
+   GRID / LAYOUT HELPERS
+========================= */
+
+.file-grid {
+  margin-top: 1rem;
+}
+
+.file-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* EMI box */
+.emi-preview {
+  background: linear-gradient(135deg, #0f172a, #111827);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* Review sections */
+.review-section,
+.summary-section {
+  padding: 1rem 0;
+}
+
+/* CTA alignment */
+.cta-row {
+  padding-top: 1rem;
+}
+
+/* =========================
+   RADIO / CHECKBOX IMPROVEMENT
+========================= */
+
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--primary-glow);
+  transform: scale(1.05);
+}
+
+/* =========================
+   HOVER MICRO-INTERACTIONS
+========================= */
+
+.step-form:hover,
+.step-card:hover {
+  border-color: rgba(59, 130, 246, 0.25);
 }
