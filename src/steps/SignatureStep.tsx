@@ -1,5 +1,6 @@
 import { useFormStore } from "../store/formStore";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import SignatureCanvas from "react-signature-canvas";
 
 interface Props {
   onNext: () => void;
@@ -8,16 +9,25 @@ interface Props {
 
 export default function SignatureStep({ onNext, onBack }: Props) {
   const { setSignatureInfo } = useFormStore();
-  const [signature, setSignature] = useState("");
+  const sigCanvas = useRef<SignatureCanvas>(null);
   const [agree, setAgree] = useState(false);
+  const [hasSignature, setHasSignature] = useState(false);
+
+  const clearSignature = () => {
+    sigCanvas.current?.clear();
+    setHasSignature(false);
+  };
 
   const handleSubmit = () => {
-    setSignatureInfo({ signature, agree });
+    const dataUrl = sigCanvas.current?.isEmpty()
+      ? ""
+      : sigCanvas.current?.toDataURL("image/png");
+    setSignatureInfo({ signature: dataUrl || "", agree });
     onNext();
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] srep signature-step">
+    <div className="min-h-screen bg-[var(--color-bg)] step signature-step">
       {/* Header bar */}
       <header className="bg-[var(--color-primary)] py-4 px-6">
         <h1 className="text-white text-2xl font-bold">Application Form</h1>
@@ -31,19 +41,27 @@ export default function SignatureStep({ onNext, onBack }: Props) {
 
         <div className="space-y-4">
           <div>
-            <label htmlFor="signature">Signature</label>
-            <input
-              id="signature"
-              type="text"
-              value={signature}
-              onChange={(e) => setSignature(e.target.value)}
-              className="border rounded p-2 w-full"
-              placeholder="Type your full name"
-              title="Signature"
+            <label className="block mb-2">Draw your signature</label>
+            <SignatureCanvas
+              ref={sigCanvas}
+              penColor="black"
+              canvasProps={{
+                width: 500,
+                height: 200,
+                className: "border rounded bg-white",
+              }}
+              onEnd={() => setHasSignature(true)}
             />
+            <button
+              type="button"
+              onClick={clearSignature}
+              className="mt-2 text-sm text-red-500"
+            >
+              Clear
+            </button>
           </div>
 
-          <div className="field checkbox-field flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <input
               id="agree"
               type="checkbox"
@@ -64,7 +82,7 @@ export default function SignatureStep({ onNext, onBack }: Props) {
             type="button"
             onClick={handleSubmit}
             className="primary"
-            disabled={!signature || !agree}
+            disabled={!hasSignature || !agree}
           >
             Next
           </button>

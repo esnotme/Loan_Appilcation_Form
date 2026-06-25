@@ -9,33 +9,24 @@ interface Props {
 
 export default function DocumentUploadStep({ onNext, onBack }: Props) {
   const { setDocumentInfo } = useFormStore();
-  const [files, setFiles] = useState<File[]>([]);
+  const [idFiles, setIdFiles] = useState<File[]>([]);
+  const [incomeFiles, setIncomeFiles] = useState<File[]>([]);
+  const [addressFiles, setAddressFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
 
-  const onDrop = async (acceptedFiles: File[]) => {
-    const validFiles: File[] = [];
-    const newErrors: string[] = [];
-
-    for (const file of acceptedFiles) {
-      if (!["image/jpeg", "image/png", "application/pdf"].includes(file.type)) {
-        newErrors.push(`${file.name}: Only JPG, PNG, or PDF allowed`);
-        continue;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        newErrors.push(`${file.name}: File size must be under 5MB`);
-        continue;
-      }
-
-      if (file.type.startsWith("image/")) {
-        const compressed = await compressImage(file);
-        validFiles.push(compressed);
-      } else {
-        validFiles.push(file);
-      }
+  const validateAndCompress = async (file: File): Promise<File | null> => {
+    if (!["image/jpeg", "image/png", "application/pdf"].includes(file.type)) {
+      setErrors((prev) => [...prev, `${file.name}: Only JPG, PNG, or PDF allowed`]);
+      return null;
     }
-
-    setFiles((prev) => [...prev, ...validFiles].slice(0, 3)); // max 3 files
-    setErrors(newErrors);
+    if (file.size > 5 * 1024 * 1024) {
+      setErrors((prev) => [...prev, `${file.name}: File size must be under 5MB`]);
+      return null;
+    }
+    if (file.type.startsWith("image/")) {
+      return await compressImage(file);
+    }
+    return file;
   };
 
   const compressImage = (file: File): Promise<File> => {
@@ -62,56 +53,32 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
     });
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleSubmit = () => {
-    setDocumentInfo({
-      idProof: files[0]?.name || "",
-      incomeProof: files[1]?.name || "",
-      addressProof: files[2]?.name || "",
+  const makeDropzone = (files: File[], setFiles: React.Dispatch<React.SetStateAction<File[]>>, label: string) => {
+    const { getRootProps, getInputProps } = useDropzone({
+      onDrop: async (acceptedFiles) => {
+        const processed: File[] = [];
+        for (const f of acceptedFiles) {
+          const valid = await validateAndCompress(f);
+          if (valid) processed.push(valid);
+        }
+        setFiles((prev) => [...prev, ...processed].slice(0, 3));
+      },
     });
-    onNext();
-  };
 
-  return (
-    <div className="min-h-screen bg-[var(--color-bg)] step document-step">
-      {/* Header bar */}
-      <header className="bg-[var(--color-primary)] py-4 px-6">
-        <h1 className="text-white text-2xl font-bold">Application Form</h1>
-      </header>
-
-      {/* Main content */}
-      <main className="max-w-4xl mx-auto p-6 space-y-6">
-        <h2 className="text-xl font-bold text-[var(--color-primary)]">
-          Document Upload
-        </h2>
-
+    return (
+      <section className="space-y-3">
+        <h3 className="font-semibold">{label}</h3>
         <div
           {...getRootProps()}
-          className="dropzone border-2 border-dashed border-gray-400 p-6 rounded cursor-pointer hover:bg-gray-50"
-          aria-label="File upload area"
+          className="dropzone border-2 border-dashed border-gray-400 p-4 rounded cursor-pointer hover:bg-gray-50"
+          aria-label={`${label} upload area`}
         >
           <input {...getInputProps()} />
-          <p className="text-gray-600">
-            Drag & drop files here, or click to select
-          </p>
+          <p className="text-gray-600">Drag & drop files here, or click to select</p>
         </div>
-
-        {errors.length > 0 && (
-          <ul className="error-text list-disc pl-5">
-            {errors.map((err, i) => (
-              <li key={i}>{err}</li>
-            ))}
-          </ul>
-        )}
-
-        <div className="file-grid grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {files.map((file, i) => (
-            <div key={i} className="file-card border p-2 rounded text-center relative">
+            <div key={i} className="border p-2 rounded text-center relative">
               {file.type === "application/pdf" ? (
                 <span className="text-sm text-gray-700">📄 {file.name}</span>
               ) : (
@@ -123,7 +90,7 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
               )}
               <button
                 type="button"
-                onClick={() => removeFile(i)}
+                onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
                 className="absolute top-1 right-1 text-xs text-red-500"
               >
                 ✕
@@ -131,14 +98,43 @@ export default function DocumentUploadStep({ onNext, onBack }: Props) {
             </div>
           ))}
         </div>
+      </section>
+    );
+  };
+
+  const handleSubmit = () => {
+    setDocumentInfo({
+      idProof: idFiles[0]?.name || "",
+      incomeProof: incomeFiles[0]?.name || "",
+      addressProof: addressFiles[0]?.name || "",
+    });
+    onNext();
+  };
+
+  return (
+    <div className="min-h-screen bg-[var(--color-bg)] step document-step">
+      <header className="bg-[var(--color-primary)] py-4 px-6">
+        <h1 className="text-white text-2xl font-bold">Application Form</h1>
+      </header>
+
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <h2 className="text-xl font-bold text-[var(--color-primary)]">Document Upload</h2>
+
+        {makeDropzone(idFiles, setIdFiles, "ID Proof")}
+        {makeDropzone(incomeFiles, setIncomeFiles, "Income Proof")}
+        {makeDropzone(addressFiles, setAddressFiles, "Address Proof")}
+
+        {errors.length > 0 && (
+          <ul className="error-text list-disc pl-5">
+            {errors.map((err, i) => (
+              <li key={i}>{err}</li>
+            ))}
+          </ul>
+        )}
 
         <div className="flex gap-2">
-          <button type="button" onClick={onBack} className="secondary">
-            Back
-          </button>
-          <button type="button" onClick={handleSubmit} className="primary">
-            Next
-          </button>
+          <button type="button" onClick={onBack} className="secondary">Back</button>
+          <button type="button" onClick={handleSubmit} className="primary">Next</button>
         </div>
       </main>
     </div>

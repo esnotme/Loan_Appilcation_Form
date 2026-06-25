@@ -47,7 +47,6 @@ describe("Step 7 – Document Upload", () => {
   });
 
   it("rejects invalid file types", () => {
-    const file = new File(["content"], "test.exe", { type: "application/x-msdownload" });
     cy.get('[aria-label="File upload area"] input[type="file"]', { includeShadowDom: true })
       .selectFile({ contents: Cypress.Buffer.from("fake content"), fileName: "test.exe", mimeType: "application/x-msdownload" }, { force: true });
     cy.contains("Only JPG, PNG, or PDF allowed").should("be.visible");
