@@ -65,5 +65,5 @@ This project is a **frontend simulation only** — no backend services are integ
 ---
 
 ## 🔒 Submission Notes
-- Repo is **private**.  
+- Repo is **public** as submission did not allow for zip files and colloborator was not specified.  
 - Export as ZIP (excluding `node_modules`) for portal upload.  
